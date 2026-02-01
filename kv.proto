@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package kv;
+
+service KVService {
+  rpc Put (PutRequest) returns (Reply);
+  rpc Get (KeyRequest) returns (ValueReply);
+  rpc Delete (KeyRequest) returns (Reply);
+
+  rpc ReplicaPut (PutRequest) returns (Reply);
+  rpc ReplicaDelete (KeyRequest) returns (Reply);
+
+  rpc Ping (Empty) returns (Reply);
+  rpc Recover (PartitionRequest) returns (DataDump);
+}
+
+message PutRequest {
+  string key = 1;
+  string value = 2;
+}
+
+message KeyRequest {
+  string key = 1;
+}
+
+message Reply {
+  bool success = 1;
+  string message = 2;
+}
+
+message ValueReply {
+  bool found = 1;
+  string value = 2;
+}
+
+message Empty {}
+
+message PartitionRequest {
+  int32 partition_id = 1;
+}
+
+message DataDump {
+  map<string, string> data = 1;
+}
