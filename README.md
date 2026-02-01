@@ -12,13 +12,21 @@ Hệ thống lưu trữ dạng key–value theo mô hình phân tán, triển kh
 
 ## Cấu trúc thư mục
 ƯDPT/
+
 ├── kv.proto           # Định nghĩa service và message
+
 ├── kv_pb2.py          # Sinh ra từ protoc
+
 ├── kv_pb2_grpc.py     # Sinh ra từ protoc
+
 ├── node.py            # Triển khai node
+
 ├── client.py          # Triển khai client CLI
+
 ├── config.py          # Cấu hình địa chỉ các node
+
 ├── images             # Ảnh
+
 └── README.md          # Tài liệu hướng dẫn
 
 ---
@@ -73,8 +81,8 @@ Commands: put <k> <v> | get <k> | delete <k>
 ```
 
 3. Kiểm thử chịu lỗi
-3. Kiểm thử chịu lỗi
-+ Trường hợp 1: Owner node bị tắt
+
+Trường hợp 1: Owner node bị tắt
  - Ghi dữ liệu vào hệ thống
  - Thực hiện: put b nguyet
  - Dữ liệu được lưu tại primary node (ví dụ node 1) và sao lưu sang 2 node replica (node 0 và node 2).
@@ -86,7 +94,7 @@ Commands: put <k> <v> | get <k> | delete <k>
  - Các node này sẽ forward yêu cầu về owner (node 1). Vì node 1 đã chết, yêu cầu thất bại.
 → Kết luận: Khi owner node bị hỏng, dữ liệu tạm thời không khả dụng cho đến khi node được khởi động lại và khôi phục.
 
-+ Trường hợp 2: Một replica node bị tắt
+Trường hợp 2: Một replica node bị tắt
  - Ghi dữ liệu
  - Thực hiện: put a 123.
  - Tắt một node replica (ví dụ node 2).
@@ -96,7 +104,7 @@ Commands: put <k> <v> | get <k> | delete <k>
  - Primary node hoặc replica còn lại vẫn forward về owner (còn sống), nên dữ liệu vẫn đọc được.
 → Kết luận: Hệ thống vẫn hoạt động khi mất một replica.
 
-+ Trường hợp 3: Tắt nhiều node
+Trường hợp 3: Tắt nhiều node
  - Ghi dữ liệu
  - Thực hiện: put c 456.
  - Tắt tất cả các node trong cluster.
@@ -106,7 +114,7 @@ Commands: put <k> <v> | get <k> | delete <k>
  - Client không thể kết nối tới bất kỳ node nào.
 → Kết luận: Khi toàn bộ cluster ngừng hoạt động, dữ liệu không khả dụng.
 
-+ Trường hợp 4: Khôi phục node
+Trường hợp 4: Khôi phục node
  - Tắt một node (ví dụ node 1).
  - Node 1 mất dữ liệu cục bộ.
  - Khởi động lại node 1.
@@ -137,4 +145,5 @@ Recover: node khởi động lại yêu cầu snapshot từ node khác để kh�
 + Lưu dữ liệu xuống disk
 + Thêm cơ chế đồng thuận Raft
 + Hỗ trợ scale động số node
+
 
